@@ -2,7 +2,8 @@ const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 // const url = 'https://www.gasbuddy.com/gasprices/Kentucky/Walton';
 
-const gasPriceScrapper = async (url) => {
+const gasPriceScrapper = async (city, state) => {
+    const url = `https://www.gasbuddy.com/gasprices/${state}/${city}`
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 926 });
@@ -35,4 +36,4 @@ const gasPriceScrapper = async (url) => {
     console.dir(gasData);
 };
 
-module.exports = gasPriceScrapper('https://www.gasbuddy.com/gasprices/Kentucky/Walton');
+module.exports = gasPriceScrapper('Walton', 'Kentucky');
