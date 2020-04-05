@@ -1,8 +1,8 @@
 const puppeteer = require('puppeteer');
 const $ = require('cheerio');
-const url = 'https://www.gasbuddy.com/gasprices/Kentucky/Walton';
+// const url = 'https://www.gasbuddy.com/gasprices/Kentucky/Walton';
 
-(async () => {
+const gasPriceScrapper = async (url) => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.setViewport({ width: 1920, height: 926 });
@@ -15,12 +15,11 @@ const url = 'https://www.gasbuddy.com/gasprices/Kentucky/Walton';
         let gasElms = document.querySelectorAll('tr.accordion-toggle');
         // get the gas data
         gasElms.forEach((gasElement) => {
-          console.log(gasElement)
             let gasJson = {};
             try {
                 gasJson.name = gasElement.querySelector('strong').innerText;
                 gasJson.price = gasElement.querySelector('div.gb-price').innerText;
-                // gasJson.rating = gasElement.querySelector('span.review-score-badge').innerText;
+                gasJson.location = gasElement.innerText;
                 // if(gasElement.querySelector('strong.price')){
                 //     gasJson.price = gasElement.querySelector('strong.price').innerText;
                 // }
@@ -34,4 +33,6 @@ const url = 'https://www.gasbuddy.com/gasprices/Kentucky/Walton';
     });
 
     console.dir(gasData);
-})();
+};
+
+module.exports = gasPriceScrapper('https://www.gasbuddy.com/gasprices/Kentucky/Walton');
